@@ -11,7 +11,7 @@ namespace KnightSquare
     #region Fields
 
     private int _SquareSize;
-    private Visit[][] _Grid;
+    private Visit[] _Grid;
     private readonly List<CoordinatePath> _CoordinatePaths = new List<CoordinatePath>();
     
 
@@ -34,7 +34,9 @@ namespace KnightSquare
       CoordinatePath coordinatePath = new CoordinatePath();
       coordinatePath.AddCoordinate(new Coordinates(0, 0));
       _CoordinatePaths.Add(coordinatePath);
-      RecursivePaths(new Coordinates(0, 0), coordinatePath);
+
+      int pathIdentifer = 0;
+      RecursivePaths(new Coordinates(0, 0), coordinatePath,0);
 
     }
 
@@ -42,34 +44,38 @@ namespace KnightSquare
 
     #region Private Methods
 
-    private Visit[][] ConstructDefaultGrid(int _SquareSize)
+    private Visit[] ConstructDefaultGrid(int _SquareSize)
     {
-      Visit[][] grid = Enumerable
-                   .Range(0, _SquareSize)
-                   .Select(i => Enumerable.Repeat(0, _SquareSize).ToArray())
-                   .ToArray();
+      Visit[] grid = new Visit[_SquareSize*_SquareSize];
+      for (int i = 0; i < grid.Length; i++)
+      {
+        grid[i] = new Visit();
+      }
+     
       return grid;
     }
 
 
-    private void RecursivePaths(Coordinates coordinate,CoordinatePath coordinatePath)
+    private void RecursivePaths(Coordinates coordinate,CoordinatePath coordinatePath, int pathIdentifer)
     {
-      if (IsCoordinateMarkedOnGrid(coordinate))
+      if (IsCoordinateMarkedOnGrid(coordinate,pathIdentifer))
       {
         return;
       }
 
 
-      MarkCoordinateOnGrid(coordinate);
+      MarkCoordinateOnGrid(coordinate,pathIdentifer);
 
       Coordinates[] newCordinates = GetNewValidCoordinates(coordinate);
 
       int depth = coordinatePath.Coordinates.Length;
       Console.WriteLine("depth is" + depth.ToString());
 
+      int newPathIdentifer;
+
       foreach (var coordiante in newCordinates)
       {
-        if (!IsCoordinateMarkedOnGrid(coordiante))
+        if (!IsCoordinateMarkedOnGrid(coordiante,pathIdentifer))
         {
           //this is the first one
           CoordinatePath cordinatePathToPassOn;
@@ -77,23 +83,27 @@ namespace KnightSquare
           {
             coordinatePath.AddCoordinate(coordiante);
             cordinatePathToPassOn = coordinatePath;
+            newPathIdentifer = pathIdentifer;
           }
           else
           {
             CoordinatePath newCordinatePath = coordinatePath.Branch();
             _CoordinatePaths.Add(newCordinatePath);
             cordinatePathToPassOn = newCordinatePath;
+            newPathIdentifer = pathIdentifer + 1;
           }
 
-          RecursivePaths(coordiante, cordinatePathToPassOn);
+          RecursivePaths(coordiante, cordinatePathToPassOn, newPathIdentifer);
           
         }
       }
     }
 
-    private bool IsCoordinateMarkedOnGrid(Coordinates coordiante)
+    private bool IsCoordinateMarkedOnGrid(Coordinates coordiante, int identifier)
     {
-      if (_Grid[coordiante.XCoordinate][coordiante.YCoordinate] == 1)
+
+      Visit visit = _Grid[coordiante.XCoordinate + coordiante.YCoordinate*10];
+      if (visit.HasVisit(identifier))
       {
         return true;
       }
@@ -104,16 +114,17 @@ namespace KnightSquare
 
     }
 
-    private void MarkCoordinateOnGrid(Coordinates coordinate)
+    private void MarkCoordinateOnGrid(Coordinates coordinate, int identifier)
     {
-      int gridCord = _Grid[coordinate.XCoordinate][coordinate.YCoordinate];
-
-      if(gridCord == 1)
+      Visit visit = _Grid[coordinate.XCoordinate + coordinate.YCoordinate * 10];
+      
+      if(visit.HasVisit(identifier))
       {
         throw new InvalidOperationException("grid coordinate already set to 1");
       }
       Console.WriteLine(coordinate.XCoordinate.ToString() +" " + coordinate.YCoordinate.ToString());
-      _Grid[coordinate.XCoordinate][coordinate.YCoordinate] = 1;
+
+      visit.AddVisit(identifier);
     }
 
     private bool ValidateCoordinates(Coordinates coordinates)

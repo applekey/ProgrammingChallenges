@@ -9,8 +9,8 @@ namespace KnightSquare
   {
     #region Fields
 
-    private List<Coordinates> _Coordinates = new List<Coordinates>(); 
-
+    private List<Coordinates> _Coordinates = new List<Coordinates>();
+    private readonly int _PathIdentifier;
     #endregion
 
     #region Properties
@@ -32,7 +32,15 @@ namespace KnightSquare
       {
         _Coordinates = value.ToList();
       }
-    } 
+    }
+
+    public int PathIdentifier
+    {
+      get
+      {
+        return _PathIdentifier;
+      }
+    }
 
     #endregion
 
