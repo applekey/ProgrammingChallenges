@@ -7,16 +7,10 @@ namespace KnightSquare
 {
   public class RecursiveAlgo
   {
-    struct Coordinates
-    {
-      int x;
-      int y;
-    };
-
+   
     #region Fields
 
     private int _SquareSize;
-    private Coordinates _Coordinate;
 
     #endregion
     #region Constructor
@@ -60,8 +54,32 @@ namespace KnightSquare
 
     private Coordinates[] validCoordinates(Coordinates origionalCoordinates)
     {
-      return 
+      int x = origionalCoordinates.XCoordinate;
+      int y = origionalCoordinates.YCoordinate;
+
+      Coordinates[] additionCoordinates = new Coordinates[]
+      {
+        new Coordinates(-2,1),
+        new Coordinates(-1,2),
+        new Coordinates(1,2),
+        new Coordinates(2,1),
+        new Coordinates(2,-1),
+        new Coordinates(1,-2),
+        new Coordinates(-1,-2),
+        new Coordinates(-2,-1)
+      };
+
+      List<Coordinates> newCoordinates = new List<Coordinates>();
+      foreach (var coordinateAddtion in additionCoordinates)
+      {
+
+      }
+     
+
+
     }
+
+    
 
     
 
