@@ -11,6 +11,7 @@ namespace KnightSquare
     #region Fields
 
     private int _SquareSize;
+    private int[][] _Grid;
 
     #endregion
     #region Constructor
@@ -26,8 +27,8 @@ namespace KnightSquare
 
     public void DoIt()
     {
-      int[][] grid = ConstructDefaultGrid(_SquareSize);
-      
+      _Grid = ConstructDefaultGrid(_SquareSize);
+      RecursiveHelper(new Coordinates(0, 0));
 
     }
 
@@ -47,12 +48,63 @@ namespace KnightSquare
 
     private void RecursiveHelper(Coordinates origionalCoordinates)
     {
-     
+      Coordinates[] newCordinates = GetNewValidCoordinates(origionalCoordinates);
 
+      foreach (var coordiante in newCordinates)
+      {
+        if (!IsCoordinateMarkedOnGrid(coordiante))
+        {
+          RecursiveHelper(coordiante);
+          MarkCoordinateOnGrid(coordiante);
+        }
+      }
+    }
+
+    private bool IsCoordinateMarkedOnGrid(Coordinates coordiante)
+    {
+      if (_Grid[coordiante.XCoordinate][coordiante.YCoordinate] == 1)
+      {
+        return true;
+      }
+      else
+      {
+        return false;
+      }
 
     }
 
-    private Coordinates[] validCoordinates(Coordinates origionalCoordinates)
+    
+
+    private void MarkCoordinateOnGrid(Coordinates coordinate)
+    {
+      int gridCord = _Grid[coordinate.XCoordinate][coordinate.YCoordinate];
+
+      if(gridCord == 1)
+      {
+        throw new InvalidOperationException("grid coordinate already set to 1");
+      }
+      Console.WriteLine(coordinate.XCoordinate.ToString() +" " + coordinate.YCoordinate.ToString());
+      gridCord = 1;
+    }
+
+    private bool ValidateCoordinates(Coordinates coordinates)
+    {
+      if (coordinates.XCoordinate < 0 || coordinates.XCoordinate > _SquareSize - 1)
+      {
+        return false;
+      }
+
+      else if (coordinates.YCoordinate < 0 || coordinates.YCoordinate > _SquareSize - 1)
+      {
+        return false;
+      }
+      else
+      {
+        return true;
+      }
+    }
+
+    private Coordinates[] GetNewValidCoordinates(Coordinates origionalCoordinates)
     {
       int x = origionalCoordinates.XCoordinate;
       int y = origionalCoordinates.YCoordinate;
@@ -72,11 +124,14 @@ namespace KnightSquare
       List<Coordinates> newCoordinates = new List<Coordinates>();
       foreach (var coordinateAddtion in additionCoordinates)
       {
-
+        Coordinates newCoordinate = origionalCoordinates + coordinateAddtion;
+        if (ValidateCoordinates(newCoordinate))
+        {
+          newCoordinates.Add(newCoordinate);
+        }
       }
+      return newCoordinates.ToArray();
      
-
-
     }
 
     
