@@ -102,7 +102,7 @@ namespace KnightSquare
     private bool IsCoordinateMarkedOnGrid(Coordinates coordiante, int identifier)
     {
 
-      Visit visit = _Grid[coordiante.XCoordinate + coordiante.YCoordinate*10];
+      Visit visit = _Grid[coordiante.XCoordinate + coordiante.YCoordinate*_SquareSize];
       if (visit.HasVisit(identifier))
       {
         return true;
@@ -116,7 +116,7 @@ namespace KnightSquare
 
     private void MarkCoordinateOnGrid(Coordinates coordinate, int identifier)
     {
-      Visit visit = _Grid[coordinate.XCoordinate + coordinate.YCoordinate * 10];
+      Visit visit = _Grid[coordinate.XCoordinate + coordinate.YCoordinate * _SquareSize];
       
       if(visit.HasVisit(identifier))
       {
