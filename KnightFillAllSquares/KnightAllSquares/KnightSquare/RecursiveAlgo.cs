@@ -12,7 +12,8 @@ namespace KnightSquare
 
     private int _SquareSize;
     private int[][] _Grid;
-    private List<Coordinates> _ValidLocation = new List<Coordinates>();
+    private readonly List<CoordinatePath> _CoordinatePaths = new List<CoordinatePath>();
+    
 
     #endregion
 
@@ -27,10 +28,13 @@ namespace KnightSquare
 
     #region Public Methods
 
-    public void DoIt()
+    public void GeneratePaths()
     {
       _Grid = ConstructDefaultGrid(_SquareSize);
-      RecursiveHelper(new Coordinates(0, 0));
+      CoordinatePath coordinatePath = new CoordinatePath();
+      coordinatePath.AddCoordinate(new Coordinates(0, 0));
+      _CoordinatePaths.Add(coordinatePath);
+      RecursivePaths(new Coordinates(0, 0), coordinatePath);
 
     }
 
@@ -48,23 +52,40 @@ namespace KnightSquare
     }
 
 
-    private void RecursiveHelper(Coordinates coordinate)
+    private void RecursivePaths(Coordinates coordinate,CoordinatePath coordinatePath)
     {
       if (IsCoordinateMarkedOnGrid(coordinate))
       {
         return;
       }
 
+
       MarkCoordinateOnGrid(coordinate);
 
       Coordinates[] newCordinates = GetNewValidCoordinates(coordinate);
+
+      int depth = coordinatePath.Coordinates.Length;
+      Console.WriteLine("depth is" + depth.ToString());
 
       foreach (var coordiante in newCordinates)
       {
         if (!IsCoordinateMarkedOnGrid(coordiante))
         {
-          
-          RecursiveHelper(coordiante);
+          //this is the first one
+          CoordinatePath cordinatePathToPassOn;
+          if (coordinatePath.Coordinates.Length == depth)
+          {
+            coordinatePath.AddCoordinate(coordiante);
+            cordinatePathToPassOn = coordinatePath;
+          }
+          else
+          {
+            CoordinatePath newCordinatePath = coordinatePath.Branch();
+            _CoordinatePaths.Add(newCordinatePath);
+            cordinatePathToPassOn = newCordinatePath;
+          }
+
+          RecursivePaths(coordiante, cordinatePathToPassOn);
           
         }
       }
@@ -82,8 +103,6 @@ namespace KnightSquare
       }
 
     }
-
-    
 
     private void MarkCoordinateOnGrid(Coordinates coordinate)
     {

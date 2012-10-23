@@ -11,7 +11,7 @@ namespace KnightSquare
     {
 
       RecursiveAlgo algo = new RecursiveAlgo(15);
-      algo.DoIt();
+      algo.GeneratePaths();
       Console.Read();
 
     }
