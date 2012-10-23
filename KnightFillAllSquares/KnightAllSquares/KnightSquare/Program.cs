@@ -10,7 +10,7 @@ namespace KnightSquare
     static void Main(string[] args)
     {
 
-      RecursiveAlgo algo = new RecursiveAlgo(8);
+      RecursiveAlgo algo = new RecursiveAlgo(15);
       algo.DoIt();
       Console.Read();
 

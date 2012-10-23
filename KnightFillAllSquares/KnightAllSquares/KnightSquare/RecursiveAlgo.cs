@@ -12,8 +12,10 @@ namespace KnightSquare
 
     private int _SquareSize;
     private int[][] _Grid;
+    private List<Coordinates> _ValidLocation = new List<Coordinates>();
 
     #endregion
+
     #region Constructor
 
     public RecursiveAlgo(int squareSize)
@@ -32,30 +34,38 @@ namespace KnightSquare
 
     }
 
+    #endregion
+
+    #region Private Methods
+
     private int[][] ConstructDefaultGrid(int _SquareSize)
     {
       int[][] grid = Enumerable
                    .Range(0, _SquareSize)
-                   .Select(i => Enumerable.Repeat(0,_SquareSize).ToArray())
+                   .Select(i => Enumerable.Repeat(0, _SquareSize).ToArray())
                    .ToArray();
       return grid;
     }
 
 
-    #endregion
-
-    #region Private Methods
-
-    private void RecursiveHelper(Coordinates origionalCoordinates)
+    private void RecursiveHelper(Coordinates coordinate)
     {
-      Coordinates[] newCordinates = GetNewValidCoordinates(origionalCoordinates);
+      if (IsCoordinateMarkedOnGrid(coordinate))
+      {
+        return;
+      }
+
+      MarkCoordinateOnGrid(coordinate);
+
+      Coordinates[] newCordinates = GetNewValidCoordinates(coordinate);
 
       foreach (var coordiante in newCordinates)
       {
         if (!IsCoordinateMarkedOnGrid(coordiante))
         {
+          
           RecursiveHelper(coordiante);
-          MarkCoordinateOnGrid(coordiante);
+          
         }
       }
     }
@@ -84,7 +94,7 @@ namespace KnightSquare
         throw new InvalidOperationException("grid coordinate already set to 1");
       }
       Console.WriteLine(coordinate.XCoordinate.ToString() +" " + coordinate.YCoordinate.ToString());
-      gridCord = 1;
+      _Grid[coordinate.XCoordinate][coordinate.YCoordinate] = 1;
     }
 
     private bool ValidateCoordinates(Coordinates coordinates)
