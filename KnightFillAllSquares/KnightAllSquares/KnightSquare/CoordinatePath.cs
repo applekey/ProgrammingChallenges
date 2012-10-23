@@ -7,7 +7,13 @@ namespace KnightSquare
 {
   public class CoordinatePath
   {
-    private List<Coordinates> _Coordinates = new List<Coordinates>();
+    #region Fields
+
+    private List<Coordinates> _Coordinates = new List<Coordinates>(); 
+
+    #endregion
+
+    #region Properties
 
     public Coordinates[] Coordinates
     {
@@ -26,7 +32,9 @@ namespace KnightSquare
       {
         _Coordinates = value.ToList();
       }
-    }
+    } 
+
+    #endregion
 
     public CoordinatePath()
     {

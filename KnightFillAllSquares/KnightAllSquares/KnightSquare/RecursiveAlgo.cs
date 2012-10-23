@@ -11,7 +11,7 @@ namespace KnightSquare
     #region Fields
 
     private int _SquareSize;
-    private int[][] _Grid;
+    private Visit[][] _Grid;
     private readonly List<CoordinatePath> _CoordinatePaths = new List<CoordinatePath>();
     
 
@@ -42,9 +42,9 @@ namespace KnightSquare
 
     #region Private Methods
 
-    private int[][] ConstructDefaultGrid(int _SquareSize)
+    private Visit[][] ConstructDefaultGrid(int _SquareSize)
     {
-      int[][] grid = Enumerable
+      Visit[][] grid = Enumerable
                    .Range(0, _SquareSize)
                    .Select(i => Enumerable.Repeat(0, _SquareSize).ToArray())
                    .ToArray();
