@@ -101,9 +101,9 @@ namespace KnightSquare
         }
         else
         {
-
-          _CoordinatePaths.Add(tmp);
-          cordinatePathToPassOn = tmp;
+          CoordinatePath path = tmp.Branch();
+          _CoordinatePaths.Add(path);
+          cordinatePathToPassOn = path;
         }
 
         RecursivePaths(newCoordinates[i], cordinatePathToPassOn);
