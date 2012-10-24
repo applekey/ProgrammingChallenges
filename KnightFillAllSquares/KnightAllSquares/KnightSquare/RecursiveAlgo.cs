@@ -78,34 +78,59 @@ namespace KnightSquare
 
       AddCoordinateVisitOnPath(coordinate, coordinatePath);
 
-      Coordinates[] newCordinates = GetNewValidCoordinates(coordinate);
+      Coordinates[] newCoordinates = GenerateNewValidCoordinates(coordinate, coordinatePath);
 
-      int depth = coordinatePath.Coordinates.Length;
-      //Console.WriteLine("depth is" + depth.ToString());
-
-
-      foreach (var coordiante in newCordinates)
+      if (newCoordinates == null)
       {
-        if (!IsCoordinateAlreadyVisitedOnPath(coordiante, coordinatePath))
-        {
-          //this is the first one
-          CoordinatePath cordinatePathToPassOn;
-          if (coordinatePath.Coordinates.Length == depth)
-          {
-            
-            cordinatePathToPassOn = coordinatePath;
-          }
-          else
-          {
-            CoordinatePath newCordinatePath = coordinatePath.Branch();
-            _CoordinatePaths.Add(newCordinatePath);
-            cordinatePathToPassOn = newCordinatePath;
-          }
+        return;
+      }
 
-          RecursivePaths(coordiante, cordinatePathToPassOn);
-          
+      Console.WriteLine("number of choices is" + newCoordinates.Length.ToString());
+      CoordinatePath tmp =  coordinatePath.Branch();
+      for (int i = 0; i < newCoordinates.Length; i++)
+			{
+        if (i == 1)
+        {
+        }
+
+        //this is the first one
+        CoordinatePath cordinatePathToPassOn;
+        if (i == 0)
+        {
+          cordinatePathToPassOn = coordinatePath;
+        }
+        else
+        {
+
+          _CoordinatePaths.Add(tmp);
+          cordinatePathToPassOn = tmp;
+        }
+
+        RecursivePaths(newCoordinates[i], cordinatePathToPassOn);
+      }
+    }
+
+    private Coordinates[] GenerateNewValidCoordinates(Coordinates coordinate, CoordinatePath coordinatePath)
+    {
+      List<Coordinates> validCoordiantes = new List<Coordinates>();
+      Coordinates[] newCordinates = GetNewValidCoordinates(coordinate);
+      foreach (var coord in newCordinates)
+      {
+
+        if (!IsCoordinateAlreadyVisitedOnPath(coord, coordinatePath))
+        {
+          validCoordiantes.Add(coord);
         }
       }
+      if (validCoordiantes.Count() != 0)
+      {
+        return validCoordiantes.ToArray();
+      }
+      else
+      {
+        return null;
+      }
+      
     }
 
     private bool IsCoordinateAlreadyVisitedOnPath(Coordinates coordiante, CoordinatePath coordinatePath)

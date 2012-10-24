@@ -57,7 +57,14 @@ namespace KnightSquare
     public CoordinatePath Branch()
     {
       CoordinatePath newCoordinates = new CoordinatePath();
-      newCoordinates._Coordinates = this._Coordinates;
+      
+      List<Coordinates> coordiantes = new List<Coordinates>();
+      foreach (var coord in this._Coordinates)
+      {
+        coordiantes.Add(new Coordinates(coord.XCoordinate, coord.YCoordinate));
+      }
+
+      newCoordinates._Coordinates = coordiantes;
       return newCoordinates;
     }
 
