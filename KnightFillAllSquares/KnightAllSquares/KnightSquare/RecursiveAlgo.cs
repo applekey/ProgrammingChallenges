@@ -56,26 +56,25 @@ namespace KnightSquare
     }
 
 
-    private void RecursivePaths(Coordinates coordinate,CoordinatePath coordinatePath, int pathIdentifer)
+    private void RecursivePaths(Coordinates coordinate,CoordinatePath coordinatePath)
     {
-      if (IsCoordinateMarkedOnGrid(coordinate,pathIdentifer))
+      if (IsCoordinateMarkedOnGrid(coordinate, coordinatePath))
       {
         return;
       }
 
 
-      MarkCoordinateOnGrid(coordinate,pathIdentifer);
+      MarkCoordinateOnGrid(coordinate, coordinatePath);
 
       Coordinates[] newCordinates = GetNewValidCoordinates(coordinate);
 
       int depth = coordinatePath.Coordinates.Length;
       Console.WriteLine("depth is" + depth.ToString());
 
-      int newPathIdentifer;
 
       foreach (var coordiante in newCordinates)
       {
-        if (!IsCoordinateMarkedOnGrid(coordiante,pathIdentifer))
+        if (!IsCoordinateMarkedOnGrid(coordiante, coordinatePath))
         {
           //this is the first one
           CoordinatePath cordinatePathToPassOn;
@@ -83,17 +82,15 @@ namespace KnightSquare
           {
             coordinatePath.AddCoordinate(coordiante);
             cordinatePathToPassOn = coordinatePath;
-            newPathIdentifer = pathIdentifer;
           }
           else
           {
             CoordinatePath newCordinatePath = coordinatePath.Branch();
             _CoordinatePaths.Add(newCordinatePath);
             cordinatePathToPassOn = newCordinatePath;
-            newPathIdentifer = pathIdentifer + 1;
           }
 
-          RecursivePaths(coordiante, cordinatePathToPassOn, newPathIdentifer);
+          RecursivePaths(coordiante, cordinatePathToPassOn);
           
         }
       }
