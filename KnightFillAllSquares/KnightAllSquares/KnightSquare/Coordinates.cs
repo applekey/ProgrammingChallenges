@@ -58,6 +58,30 @@ namespace KnightSquare
 
     }
 
+    public static bool operator == (Coordinates cord1, Coordinates cord2)
+    {
+      if (cord1.XCoordinate == cord2.XCoordinate && cord1.YCoordinate == cord2.YCoordinate)
+      {
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
+
+    public static bool operator != (Coordinates cord1, Coordinates cord2)
+    {
+      if (cord1.XCoordinate != cord2.XCoordinate || cord1.YCoordinate != cord2.YCoordinate)
+      {
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
+
     #endregion
 
   }

@@ -61,5 +61,18 @@ namespace KnightSquare
       return newCoordinates;
     }
 
+    public bool IsCoordinateOnPath(Coordinates cordinates)
+    {
+      foreach (var internalCords in _Coordinates)
+      {
+        if (cordinates == internalCords)
+        {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
   }
 }
